@@ -69,22 +69,20 @@ def int_check(question, low=None, high=None):
             # lower bounds are specified
             if situation == "both":
                 if response < low or response > high:
-                    print("Please enter a number between "
-                          f"{low} and {high}")
+                    color_text(f"Please enter a number between {low} and {high}", 'red')
                     continue
 
             # Checks input is not too low
             elif situation == "low only":
                 if response < low:
-                    print("Please enter a number that is more"
-                          f"than {low}")
+                    color_text(f"Please enter a number that is more than {low}", 'red')
                     continue
 
             return response
 
         # Checks input is an integer
         except ValueError:
-            print("Please enter an integer that is more than 0")
+            color_text("Please enter an integer that is more than 0", 'red')
             continue
 
 
@@ -106,14 +104,37 @@ def statement_generator(statement, decoration, lines=None):
     return new_statement
 
 
+# Lets you change color of printed text easily
+def color_text(text, color):
+    # Code was found using chatGpt using prompt
+    # "Python function that allows me to change the text color"
+    # Code was changed a bit as some parts were unneeded
+
+    # list of colors
+    colors = {
+        'red': '\033[91m',
+        'green': '\033[92m',
+        'yellow': '\033[93m',
+        'blue': '\033[94m',
+        'magenta': '\033[95m',
+        'cyan': '\033[96m',
+        'white': '\033[97m',
+    }
+
+    # Prints text in specified color
+    print(f"{colors[color]}{text}\033[0m")
+
+
 # Main Routine
 
 
 # Lists
 y_n_list = ["yes", "no"]
+mode_list = ["easy", "medium", "hard"]
 
 # Errors
 y_n_error = "Please enter either yes or no"
+mode_error = "Please choose either easy, medium or hard"
 
 # Asks users if they have played before
 # if 'no' then print instructions
