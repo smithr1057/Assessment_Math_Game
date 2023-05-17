@@ -149,29 +149,51 @@ rounds_played = 0
 play_again = "yes"
 while play_again == "yes":
 
-    # Rounds Heading
-    print()
-    if rounds == "":
-        heading = f"Continuous Mode: Round" \
-                  f" {rounds_played + 1}"
+    # Choose difficulty
+    mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
+    # Generate random num
+    if mode_choice == "easy":
+        max_num = 100
+    elif mode_choice == "medium":
+        max_num = 500
     else:
-        heading = f"Round {rounds_played + 1}" \
-                  f" of {rounds}"
+        max_num = 1000
 
-    print(heading)
-    quit_game = input(f"<enter> to continue or 'xxx' to end: ")
+    end_game = "no"
+    while end_game == "no":
 
-    # End game if exit code is typed
-    if quit_game == "xxx":
-        break
+        if rounds_played == 0 or rounds_played == :
 
-    # rest of loop / game
-    print(f"You chose {quit_game}")
+            # Rounds Heading
+            print()
+            if rounds == "":
+                heading = f"Continuous Mode: Round" \
+                          f" {rounds_played + 1}"
+            else:
+                heading = f"Round {rounds_played + 1}" \
+                          f" of {rounds}"
 
-    rounds_played += 1
+            print(heading)
 
-    # End game if requested # of rounds has been played
-    if rounds_played == rounds:
-        break
+            quit_game = input(f"<enter> to continue or 'xxx' to end: ")
 
-print("Thank you for playing")
+            # End game if exit code is typed
+            if quit_game == "xxx":
+                break
+
+        # rest of loop / game
+
+        rounds_played += 1
+
+        # End game if requested # of rounds has been played
+        if rounds_played == rounds:
+            break
+
+# If user hasn't played a round comment
+# Don't give them the option of game history
+if rounds_played < 1:
+    print()
+    print("Maybe play the game next time :)")
+else:
+    print()
+    color_text("Thanks for playing the Add One Game :D", "blue")

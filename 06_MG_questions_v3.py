@@ -1,5 +1,5 @@
 import random
-# V2 - Add an easy, medium and hard mode
+# V3 - Editing the modes to add hard mode with decimals
 
 
 # Functions
@@ -90,20 +90,28 @@ loop = "yes"
 while loop == "yes":
     # Choose difficulty
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
-    # Generate random num
-    if mode_choice == "easy":
-        max_num = 100
-    elif mode_choice == "medium":
-        max_num = 500
-    else:
-        max_num = 1000
 
     game = "yes"
     while game == "yes":
-        random_num = random.randint(1, max_num)
-        answer = random_num + 1
-    
-        user_guess = int_check(f"What is 1 more than {random_num}: ", 0, max_num + 1)
+
+        # Generate random num
+        if mode_choice == "easy":
+            max_num = 100
+            random_num = random.randint(1, max_num)
+            answer = random_num + 1
+        elif mode_choice == "medium":
+            max_num = 500
+            random_num = random.randint(1, max_num)
+            answer = random_num + 1
+        else:
+            max_num = 500
+            random_num = round(random.uniform(1, max_num), 1)
+            answer = random_num + 0.01
+
+        if mode_choice == "hard":
+            user_guess = float(f"What is 0.1 more than {random_num}: ", 0,)
+        else:
+            user_guess = int_check(f"What is 1 more than {random_num}: ", 0, max_num + 1)
         if user_guess == answer:
             color_text("Correct", 'green')
         else:
