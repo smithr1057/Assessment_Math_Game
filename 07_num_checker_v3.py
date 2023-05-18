@@ -1,4 +1,5 @@
-def int_check(question, low=None, high=None):
+# checks users enter an integer / float between a low and high number and allows 'xxx'
+def num_check(question, type, low=None, high=None):
     # Used ChatGPT to allow the use of the letter 'x' used the prompt bellow
     # Make that function allow the letter 'x' to be used
 
@@ -9,15 +10,26 @@ def int_check(question, low=None, high=None):
 
     while True:
         try:
-            # Ask the question
-            response = input(question)
+            if type == "int":
+                # Ask the question
+                response = input(question)
 
-            # Check if response is 'x'
-            if response.lower() == 'xxx':
-                return response
+                # Check if response is 'x'
+                if response.lower() == 'xxx':
+                    return response
 
-            # Convert the response to an integer
-            response = int(response)
+                # Convert the response to an integer
+                response = int(response)
+            else:
+                # Ask the question
+                response = input(question)
+
+                # Check if response is 'xxx'
+                if response.lower() == 'xxx':
+                    return response
+
+                # Convert the response to a float
+                response = float(response)
 
             # Checks input is not too high or
             # too low if both upper and lower bounds are specified
@@ -62,4 +74,4 @@ def color_text(text, color):
 
 loop = "yes"
 while loop == "yes":
-    int_check("how many: ", 1, 10)
+    int_check("how many: ", 0, 10)

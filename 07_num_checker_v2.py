@@ -1,3 +1,4 @@
+# checks users enter an integer between a low and high number and allows 'xxx'
 def int_check(question, low=None, high=None):
     # Used ChatGPT to allow the use of the letter 'x' used the prompt bellow
     # Make that function allow the letter 'x' to be used
