@@ -1,3 +1,4 @@
+import random
 # Functions
 
 # checks user answers with valid answer
@@ -31,7 +32,7 @@ def instructions():
 def check_rounds():
 
     while True:
-        response = input("How many rounds: ")
+        response = input("How many questions: ")
 
         round_error = "Please type either <enter> " \
                       "or an integer that is more than 0"
@@ -144,7 +145,6 @@ def color_text(text, color):
 
 # Main Routine
 
-
 # Lists
 y_n_list = ["yes", "no"]
 mode_list = ["easy", "medium", "hard"]
@@ -153,18 +153,25 @@ mode_list = ["easy", "medium", "hard"]
 y_n_error = "Please enter either yes or no"
 mode_error = "Please choose either easy, medium or hard"
 
+# Prints title with decorations and color
+title = statement_generator("Welcome to The Plus One Game", "*", 3)
+colour_title = color_text(title, 'cyan')
+
 # Asks users if they have played before
 # if 'no' then print instructions
 played_before = choice_checker("Have you played before? ", y_n_list, y_n_error)
 if played_before == "no":
     instructions()
 
-# Ask user for # of rounds, <enter> for infinite mode
-rounds = check_rounds()
-rounds_played = 0
-
 play_again = "yes"
 while play_again == "yes":
+
+    # Set rounds played to 0 and empty game summary
+    rounds_played = 0
+    game_summary = []
+
+    # Ask user for # of rounds, <enter> for infinite mode
+    rounds = check_rounds()
 
     # Choose difficulty
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
@@ -183,54 +190,88 @@ while play_again == "yes":
 
         print(heading)
 
-        quit_game = input(f"<enter> to continue or 'xxx' to end: ")
-
-
-
-        # Generate random num and answer
+        # Generate random num
         if mode_choice == "easy":
             max_num = 100
 
         elif mode_choice == "medium":
             max_num = 500
 
-        elif mode_choice == "medium" or "easy":
-            random_num = random.randint(1, max_num)
-            answer = random_num + 1
-            user_guess = num_check(f"What is 1 more than {random_num}: ", 0, max_num + 1)
-
-        # if hard mode then do decimals
-        else:
+        elif mode_choice == "hard":
             max_num = 500
             random_num = round(random.uniform(1, max_num), 2)
             answer = random_num + 0.01
+            print(answer)
             user_guess = num_check(f"What is 0.01 more than {random_num}: ", float, 0, max_num)
 
-        # Give colored feedback if right or wrong
+        if mode_choice == "medium" or "easy":
+            random_num = random.randint(1, max_num)
+            answer = random_num + 1
+            user_guess = num_check(f"What is 1 more than {random_num}: ", int, 0, max_num + 1)
+
+        # Print result in color and set outcome
         if user_guess == answer:
-            color_text("Correct", 'green')
+            result = color_text("Correct ✔", 'green')
+            print(result)
+            outcome = f"Question {rounds_played + 1}: {result}"
+
         # End game if exit code is typed
         elif user_guess == "xxx":
             break
+
+        # Print result in color and set outcome
         else:
-            color_text("Incorrect", 'red')
+            result = color_text("Incorrect ❌", 'red')
+            print(result)
+            outcome = f"Question {rounds_played + 1}: {result}, the correct answer was {color_text(answer, 'green')}"
 
-        # End game if exit code is typed
+        # Add outcome to game summary
+        game_summary.append(outcome)
 
+        rounds_played += 1
 
-    # rest of loop / game
+        # End game if requested # of rounds has been played
+        if rounds_played == rounds:
+            break
 
-    rounds_played += 1
+    if rounds_played >= 1:
+        # Ask user if they want to see their game history
+        # if 'yes' show game history
+        show_stats = choice_checker("Would you like to see your"
+                                    " end game history? "
+                                    , yes_no_list, y_n_error)
 
-    # End game if requested # of rounds has been played
-    if rounds_played == rounds:
-        break
+        # Calculate stats and print them out
+        if show_stats == "yes":
 
+            # Calculate game stat
+            percent_win = rounds_won / rounds_played * 100
+            percent_lose = rounds_lost / rounds_played * 100
+
+            # Displays game history
+            print()
+            game_history = statement_generator("Game History", "-", 3)
+            color_game_history = color_text(game_history, 'cyan')
+
+            for game in game_summary:
+                print(game)
+
+            print()
+
+            # displays game stats with % values to the nearest whole number
+            statement_generator("Game Statistics", "-", 3)
+            color_text(f"Win: {rounds_won}, {percent_win:.0f}%", 'green')
+            color_text(f"Loss: {rounds_lost}, {percent_lose:.0f}%", 'red')
+
+    # Ask user if they want to play again
+    print()
+    play_again = choice_checker("Would you like to play again? "
+                                , yes_no_list, y_n_error)
 # If user hasn't played a round comment
 # Don't give them the option of game history
 if rounds_played < 1:
     print()
-    print("Maybe play the game next time :)")
+    print("Maybe play the game next time 🤦‍♂️")
 else:
     print()
-    color_text("Thanks for playing the Add One Game :D", "blue")
+    color_text("Thanks for playing The Plus One Game 😃", "blue")
