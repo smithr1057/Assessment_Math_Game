@@ -168,6 +168,8 @@ while play_again == "yes":
 
     # Set rounds played to 0 and empty game summary
     rounds_played = 0
+    rounds_lost = 0
+    rounds_won = 0
     game_summary = []
 
     # Ask user for # of rounds, <enter> for infinite mode
@@ -191,27 +193,26 @@ while play_again == "yes":
         print(heading)
 
         # Generate random num
-        if mode_choice == "easy":
-            max_num = 100
+        if mode_choice == "easy" or mode_choice == "medium":
+            if mode_choice == "easy":
+                max_num = 100
+            if mode_choice == "medium":
+                max_num = 500
+            random_num = random.randint(1, max_num)
+            answer = random_num + 1
+            user_guess = num_check(f"What is 1 more than {random_num}: ", int, 0, max_num + 1)
 
-        elif mode_choice == "medium":
-            max_num = 500
-
-        elif mode_choice == "hard":
+        else:
             max_num = 500
             random_num = round(random.uniform(1, max_num), 2)
             answer = random_num + 0.01
             print(answer)
             user_guess = num_check(f"What is 0.01 more than {random_num}: ", float, 0, max_num)
 
-        if mode_choice == "medium" or "easy":
-            random_num = random.randint(1, max_num)
-            answer = random_num + 1
-            user_guess = num_check(f"What is 1 more than {random_num}: ", int, 0, max_num + 1)
-
         # Print result in color and set outcome
         if user_guess == answer:
             result = color_text("Correct ✔", 'green')
+            rounds_won += 1
             print(result)
             outcome = f"Question {rounds_played + 1}: {result}"
 
@@ -222,6 +223,7 @@ while play_again == "yes":
         # Print result in color and set outcome
         else:
             result = color_text("Incorrect ❌", 'red')
+            rounds_lost += 1
             print(result)
             outcome = f"Question {rounds_played + 1}: {result}, the correct answer was {color_text(answer, 'green')}"
 
@@ -239,7 +241,7 @@ while play_again == "yes":
         # if 'yes' show game history
         show_stats = choice_checker("Would you like to see your"
                                     " end game history? "
-                                    , yes_no_list, y_n_error)
+                                    , y_n_list, y_n_error)
 
         # Calculate stats and print them out
         if show_stats == "yes":

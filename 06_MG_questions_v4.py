@@ -112,22 +112,23 @@ while loop == "yes":
     while game == "yes":
 
         # Generate random num
-        if mode_choice == "easy":
-            max_num = 100
 
-        elif mode_choice == "medium":
-            max_num = 500
-
-        elif mode_choice == "medium" or "easy":
+        if mode_choice == "easy" or mode_choice == "medium":
+            if mode_choice == "easy":
+                max_num = 100
+            if mode_choice == "medium":
+                max_num = 500
             random_num = random.randint(1, max_num)
             answer = random_num + 1
-            user_guess = num_check(f"What is 1 more than {random_num}: ", 0, max_num + 1)
+            user_guess = num_check(f"What is 1 more than {random_num}: ", int, 0, max_num + 1)
 
         else:
             max_num = 500
-            random_num = round(random.uniform(1, max_num), 2)
+            random_num = random.randint(1, max_num * 100) / 100
             answer = random_num + 0.01
-            user_guess = num_check(f"What is 0.1 more than {random_num}: ", float, 0, max_num)
+            print(answer)
+            user_guess = num_check(f"What is 0.01 more than {random_num}: ", float, 0, max_num)
+
 
 
         if user_guess == answer:
