@@ -16,14 +16,31 @@ def choice_checker(question, valid_list, error):
                 return item
 
         # output error if item not in list
-        print(error)
+        color_text(error, 'red')
         print()
 
 
 # Displays instructions
 def instructions():
     print()
-    print("Instructions")
+    color_text("**** How to Play ****", 'blue')
+    print()
+    print("Choose how many questions you want to "
+          "answer (press <enter> for continuous mode)")
+    print()
+    print("Choose mode")
+    print("Easy mode - Add 1 to a number up to 100")
+    print("Medium mode - Add 1 to a number up to 500")
+    print("Hard mode - Add 0.01 to a number up to 500")
+    print()
+    print("You can enter 'xxx' at any time during the game to quit")
+    print()
+    print("After you finish your game you can choose to see your "
+          "game history and statistics")
+    print()
+    print("At the end of the game you may choose to begin a new game")
+    print()
+    print("Good Luck :D")
     print()
     return ""
 
@@ -34,18 +51,18 @@ def check_rounds():
     while True:
         response = input("How many questions: ")
 
-        round_error = "Please type either <enter> " \
-                      "or an integer that is more than 0"
+        round_error = "Please type either <enter> or an integer that is more than 0"
+
         if response != "":
             try:
                 response = int(response)
 
                 if response < 1:
-                    print(round_error)
+                    color_text(round_error, 'red')
                     continue
 
             except ValueError:
-                print(round_error)
+                color_text(round_error, 'red')
                 continue
 
         return response
