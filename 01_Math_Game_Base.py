@@ -201,13 +201,13 @@ while play_again == "yes":
         # Rounds Heading
         print()
         if rounds == "":
-            heading = f"Continuous Mode: Question" \
-                      f" {rounds_played + 1}"
+            heading = f"*** Continuous Mode: Question" \
+                      f" {rounds_played + 1} ***"
         else:
-            heading = f"Question {rounds_played + 1}" \
-                      f" of {rounds}"
+            heading = f"*** Question {rounds_played + 1}" \
+                      f" of {rounds} ***"
 
-        print(heading)
+        color_text(heading, 'yellow')
 
         # Generate random num
         if mode_choice == "easy" or mode_choice == "medium":
@@ -220,11 +220,11 @@ while play_again == "yes":
             user_guess = num_check(f"What is 1 more than {random_num}: ", int, 0, max_num + 1)
 
         else:
-            max_num = 500
-            random_num = round(random.uniform(1, max_num), 2)
-            answer = random_num + 0.01
+            max_num = 1000
+            random_num = round(random.uniform(1, max_num), 1)
+            answer = round(random_num + 0.1, 1)
             print(answer)
-            user_guess = num_check(f"What is 0.01 more than {random_num}: ", float, 0, max_num)
+            user_guess = num_check(f"What is 0.1 more than {random_num}: ", float, 0, max_num)
 
         # Print result in color and set outcome
         if user_guess == answer:
@@ -239,10 +239,9 @@ while play_again == "yes":
 
         # Print result in color and set outcome
         else:
-            result = color_text("Incorrect ❌", 'red')
+            result = "Incorrect ❌"
             rounds_lost += 1
-            print(result)
-            outcome = f"Question {rounds_played + 1}: {result}, the correct answer was {color_text(answer, 'green')}"
+            outcome = f"Question {rounds_played + 1}: {color_text(result, 'red')}, the correct answer was {answer}"
 
         # Add outcome to game summary
         game_summary.append(outcome)
@@ -285,7 +284,7 @@ while play_again == "yes":
     # Ask user if they want to play again
     print()
     play_again = choice_checker("Would you like to play again? "
-                                , yes_no_list, y_n_error)
+                                , y_n_list, y_n_error)
 # If user hasn't played a round comment
 # Don't give them the option of game history
 if rounds_played < 1:
