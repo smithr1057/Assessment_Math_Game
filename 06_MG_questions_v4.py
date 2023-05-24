@@ -96,11 +96,36 @@ def choice_checker(question, valid_list, error):
         print()
 
 
+# Adds decorations to selected text
+def statement_generator(statement, decoration, lines=None):
+    sides = decoration * 3
+
+    statement = f"{sides} {statement} {sides}"
+    top_bottom = decoration * len(statement)
+
+    # use 3 lines for headings / heavy decoration
+    if lines == 3:
+        new_statement = f"{top_bottom}\n{statement}\n{top_bottom}"
+
+    else:
+        # default is one single line
+        new_statement = statement
+
+    return new_statement
+
+
 # Main Routine
 # Lists
 mode_list = ["easy", "medium", "hard"]
+y_n_list = ["yes", "no", "y", "n"]
 # error
 mode_error = "Please choose either easy, medium or hard"
+y_n_error = "Please enter either yes or no"
+
+rounds_won = 0
+rounds_lost = 0
+rounds_played = 0
+game_summary = []
 
 # loop
 loop = "yes"
@@ -112,7 +137,6 @@ while loop == "yes":
     while game == "yes":
 
         # Generate random num
-
         if mode_choice == "easy" or mode_choice == "medium":
             if mode_choice == "easy":
                 max_num = 100
@@ -123,15 +147,67 @@ while loop == "yes":
             user_guess = num_check(f"What is 1 more than {random_num}: ", int, 0, max_num + 1)
 
         else:
-            max_num = 500
-            random_num = random.randint(1, max_num * 100) / 100
-            answer = random_num + 0.01
+            max_num = 1000
+            random_num = round(random.uniform(1, max_num), 1)
+            answer = round(random_num + 0.1, 1)
             print(answer)
-            user_guess = num_check(f"What is 0.01 more than {random_num}: ", float, 0, max_num)
+            user_guess = num_check(f"What is 0.1 more than {random_num}: ", float, 0, max_num)
 
-
-
+        # Print result in color and set outcome
         if user_guess == answer:
-            color_text("Correct", 'green')
+            result = "Correct ✔"'\033[92m'
+            color_text("Correct ✔", 'green')
+            rounds_won += 1
+            outcome = f"Question {rounds_played + 1}: {result}"
+
+        # End game if exit code is typed
+        elif user_guess == "xxx":
+            break
+
+        # Print result in color and set outcome
         else:
-            color_text("Incorrect", 'red')
+            result = "Incorrect ❌"'\033[91m'
+            color_text("Incorrect ❌", 'red')
+            rounds_lost += 1
+            outcome = f"Question {rounds_played + 1}: {result}, the correct answer was {color_text(answer, 'green')}"
+
+        rounds_played += 1
+        game_summary.append(outcome)
+
+
+    if rounds_played > 1:
+        # Ask user if they want to see their game history
+        # if 'yes' show game history
+        show_stats = choice_checker("Would you like to see your"
+                                    " end game history? "
+                                    , y_n_list, y_n_error)
+
+        # Calculate stats and print them out
+        if show_stats == "yes":
+
+            # Calculate game stat
+            percent_win = rounds_won / rounds_played * 100
+            percent_lose = rounds_lost / rounds_played * 100
+
+            # Displays game history
+            print()
+            game_history = statement_generator("Game History", "-", 3)
+            color_game_history = color_text(game_history, 'cyan')
+
+            for game in game_summary:
+                print(game)
+
+            print()
+
+            # displays game stats with % values to the nearest whole number
+            statement_generator("Game Statistics", "-", 3)
+            color_text(f"Win: {rounds_won}, {percent_win:.0f}%", 'green')
+            color_text(f"Loss: {rounds_lost}, {percent_lose:.0f}%", 'red')
+
+        print()
+        print("Thanks for playing the Plus one game :D")
+
+    # If user hasn't played a round comment
+    # Don't give them the option of game history
+    elif rounds_played < 1:
+        print("Maybe play the game next time :)")

@@ -62,7 +62,7 @@ rounds_lost = 3
 rounds_won = 2
 
 y_n_error = "Please enter either yes or no"
-yes_no_list = ["yes", "no", "y", "n"]
+y_n_list = ["yes", "no", "y", "n"]
 game_summary = []
 
 if rounds_played > 1:
@@ -70,7 +70,7 @@ if rounds_played > 1:
     # if 'yes' show game history
     show_stats = choice_checker("Would you like to see your"
                                 " end game history? "
-                                , yes_no_list, y_n_error)
+                                , y_n_list, y_n_error)
 
     # Calculate stats and print them out
     if show_stats == "yes":

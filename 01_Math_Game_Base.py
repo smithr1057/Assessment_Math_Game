@@ -31,7 +31,7 @@ def instructions():
     print("Choose mode")
     print("Easy mode - Add 1 to a number up to 100")
     print("Medium mode - Add 1 to a number up to 500")
-    print("Hard mode - Add 0.01 to a number up to 500")
+    print("Hard mode - Add 0.1 to a number up to 1000")
     print()
     print("You can enter 'xxx' at any time during the game to quit")
     print()
@@ -228,10 +228,12 @@ while play_again == "yes":
 
         # Print result in color and set outcome
         if user_guess == answer:
-            result = color_text("Correct ✔", 'green')
+            result = "Correct ✔"
+            # Set color to green
+            color_result = "\033[92m" + result + "\033[0m"
+            color_text("Correct ✔", 'green')
             rounds_won += 1
-            print(result)
-            outcome = f"Question {rounds_played + 1}: {result}"
+            outcome = f"Question {rounds_played + 1}: {color_result}"
 
         # End game if exit code is typed
         elif user_guess == "xxx":
@@ -240,13 +242,17 @@ while play_again == "yes":
         # Print result in color and set outcome
         else:
             result = "Incorrect ❌"
+            # Set color to red
+            color_result = "\033[91m" + result + "\033[92m"
+            color_text("Incorrect ❌", 'red')
             rounds_lost += 1
-            outcome = f"Question {rounds_played + 1}: {color_text(result, 'red')}, the correct answer was {answer}"
+            outcome = f"Question {rounds_played + 1}: {color_result}, the correct answer was {answer}"
 
-        # Add outcome to game summary
-        game_summary.append(outcome)
 
         rounds_played += 1
+        # add results to game summary
+        game_summary.append(outcome)
+
 
         # End game if requested # of rounds has been played
         if rounds_played == rounds:
@@ -255,6 +261,7 @@ while play_again == "yes":
     if rounds_played >= 1:
         # Ask user if they want to see their game history
         # if 'yes' show game history
+        print()
         show_stats = choice_checker("Would you like to see your"
                                     " end game history? "
                                     , y_n_list, y_n_error)
@@ -272,7 +279,7 @@ while play_again == "yes":
             color_game_history = color_text(game_history, 'cyan')
 
             for game in game_summary:
-                print(game)
+                color_text(game, 'yellow')
 
             print()
 
