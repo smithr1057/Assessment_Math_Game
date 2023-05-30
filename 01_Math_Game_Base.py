@@ -209,7 +209,7 @@ while play_again == "yes":
 
         color_text(heading, 'yellow')
 
-        # Generate random num
+        # Generate random num for different difficulty
         if mode_choice == "easy" or mode_choice == "medium":
             if mode_choice == "easy":
                 max_num = 100
