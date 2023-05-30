@@ -33,20 +33,20 @@ def instructions():
     print("Medium mode - Add 1 to a number up to 500")
     print("Hard mode - Add 0.1 to a number up to 1000")
     print()
-    print("You can enter 'xxx' at any time during the game to quit")
+    print("You can enter 'xxx' at any time during the quiz to quit")
     print()
-    print("After you finish your game you can choose to see your "
-          "game history and statistics")
+    print("After you finish your quiz you can choose to see your "
+          "quiz history and statistics")
     print()
-    print("At the end of the game you may choose to begin a new game")
+    print("At the end of the quiz you may choose to begin a new quiz")
     print()
     print("Good Luck :D")
     print()
     return ""
 
 
-# Asks users how many rounds they want to play
-def check_rounds():
+# Asks users how many questions they want to play
+def check_questions():
 
     while True:
         response = input("How many questions: ")
@@ -171,7 +171,7 @@ y_n_error = "Please enter either yes or no"
 mode_error = "Please choose either easy, medium or hard"
 
 # Prints title with decorations and color
-title = statement_generator("Welcome to The Plus One Game", "*", 3)
+title = statement_generator("Welcome to The Plus One Quiz", "*", 3)
 colour_title = color_text(title, 'cyan')
 
 # Asks users if they have played before
@@ -183,29 +183,29 @@ if played_before == "no":
 play_again = "yes"
 while play_again == "yes":
 
-    # Set rounds played to 0 and empty game summary
-    rounds_played = 0
-    rounds_lost = 0
-    rounds_won = 0
-    game_summary = []
+    # Set questions answered, wrong, right to 0 and empty quiz summary
+    questions_answered = 0
+    questions_wrong = 0
+    questions_right = 0
+    quiz_summary = []
 
-    # Ask user for # of rounds, <enter> for infinite mode
-    rounds = check_rounds()
+    # Ask user for # of questions, <enter> for infinite mode
+    questions = check_questions()
 
     # Choose difficulty
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
 
-    end_game = "no"
-    while end_game == "no":
+    end_quiz = "no"
+    while end_quiz == "no":
 
-        # Rounds Heading
+        # Questions Heading
         print()
-        if rounds == "":
+        if questions == "":
             heading = f"*** Continuous Mode: Question" \
-                      f" {rounds_played + 1} ***"
+                      f" {questions_answered + 1} ***"
         else:
-            heading = f"*** Question {rounds_played + 1}" \
-                      f" of {rounds} ***"
+            heading = f"*** Question {questions_answered + 1}" \
+                      f" of {questions} ***"
 
         color_text(heading, 'yellow')
 
@@ -232,10 +232,10 @@ while play_again == "yes":
             # Set color to green
             color_result = "\033[92m" + result + "\033[0m"
             color_text("Correct ✔", 'green')
-            rounds_won += 1
-            outcome = f"Question {rounds_played + 1}: {color_result}"
+            questions_right += 1
+            outcome = f"Question {questions_answered + 1}: {color_result}"
 
-        # End game if exit code is typed
+        # End quiz if exit code is typed
         elif user_guess == "xxx":
             break
 
@@ -245,58 +245,58 @@ while play_again == "yes":
             # Set color to red
             color_result = "\033[91m" + result + "\033[92m"
             color_text("Incorrect ❌", 'red')
-            rounds_lost += 1
-            outcome = f"Question {rounds_played + 1}: {color_result}, the correct answer was {answer}"
+            questions_right += 1
+            outcome = f"Question {questions_answered + 1}: {color_result}, the correct answer was {answer}"
 
 
-        rounds_played += 1
-        # add results to game summary
-        game_summary.append(outcome)
+        questions_answered += 1
+        # add results to quiz summary
+        quiz_summary.append(outcome)
 
 
-        # End game if requested # of rounds has been played
-        if rounds_played == rounds:
+        # End quiz if requested # of questions has been played
+        if questions_answered == questions:
             break
 
-    if rounds_played >= 1:
-        # Ask user if they want to see their game history
-        # if 'yes' show game history
+    if questions_answered >= 1:
+        # Ask user if they want to see their quiz history
+        # if 'yes' show quiz history
         print()
         show_stats = choice_checker("Would you like to see your"
-                                    " end game history? "
+                                    " end quiz history? "
                                     , y_n_list, y_n_error)
 
         # Calculate stats and print them out
         if show_stats == "yes":
 
-            # Calculate game stat
-            percent_win = rounds_won / rounds_played * 100
-            percent_lose = rounds_lost / rounds_played * 100
+            # Calculate quiz stat
+            percent_right = questions_right / questions_answered * 100
+            percent_wrong = questions_wrong / questions_answered * 100
 
-            # Displays game history
+            # Displays quiz history
             print()
-            game_history = statement_generator("Game History", "-", 3)
-            color_game_history = color_text(game_history, 'cyan')
+            quiz_history = statement_generator("Quiz History", "-", 3)
+            color_quiz_history = color_text(quiz_history, 'cyan')
 
-            for game in game_summary:
-                color_text(game, 'yellow')
+            for quiz in quiz_summary:
+                color_text(quiz, 'yellow')
 
             print()
 
-            # displays game stats with % values to the nearest whole number
-            statement_generator("Game Statistics", "-", 3)
-            color_text(f"Win: {rounds_won}, {percent_win:.0f}%", 'green')
-            color_text(f"Loss: {rounds_lost}, {percent_lose:.0f}%", 'red')
+            # displays quiz stats with % values to the nearest whole number
+            statement_generator("Quiz Statistics", "-", 3)
+            color_text(f"Correct: {questions_right}, {percent_right:.0f}%", 'green')
+            color_text(f"Incorrect: {questions_wrong}, {percent_wrong:.0f}%", 'red')
 
     # Ask user if they want to play again
     print()
     play_again = choice_checker("Would you like to play again? "
                                 , y_n_list, y_n_error)
 # If user hasn't played a round comment
-# Don't give them the option of game history
-if rounds_played < 1:
+# Don't give them the option of quiz history
+if questions_answered < 1:
     print()
-    print("Maybe play the game next time 🤦‍♂️")
+    print("Maybe play the quiz next time 🤦‍♂️")
 else:
     print()
-    color_text("Thanks for playing The Plus One Game 😃", "blue")
+    color_text("Thanks for playing The Plus One Quiz 😃", "blue")
