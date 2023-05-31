@@ -1,6 +1,7 @@
 import random
 # Functions
 
+
 # checks user answers with valid answer
 def choice_checker(question, valid_list, error):
     while True:
@@ -18,56 +19,6 @@ def choice_checker(question, valid_list, error):
         # output error if item not in list
         color_text(error, 'red')
         print()
-
-
-# Displays instructions
-def instructions():
-    print()
-    color_text("**** How to Play ****", 'blue')
-    print()
-    print("Choose how many questions you want to "
-          "answer (press <enter> for continuous mode).")
-    print()
-    print("Choose mode.")
-    print("Easy mode - Add / subtract 1 to a number up to 100.")
-    print("Medium mode - Add / subtract 1-5 to a number up to 500.")
-    print("Hard mode - Add / subtract 0.01-0.05 to a number up to 1000.")
-    print()
-    print("Next you will need to enter if you would like to answer addition, subtraction or both.")
-    print()
-    print("You can enter 'xxx' at any time during the quiz to quit.")
-    print()
-    print("After you finish your quiz you can choose to see your "
-          "quiz history and statistics.")
-    print()
-    print("At the end of the quiz you may choose to begin a new quiz.")
-    print()
-    print("Good Luck :D")
-    print()
-    return ""
-
-
-# Asks users how many questions they want to play
-def check_questions():
-
-    while True:
-        response = input("How many questions: ")
-
-        round_error = "Please type either <enter> or an integer that is more than 0"
-
-        if response != "":
-            try:
-                response = int(response)
-
-                if response < 1:
-                    color_text(round_error, 'red')
-                    continue
-
-            except ValueError:
-                color_text(round_error, 'red')
-                continue
-
-        return response
 
 
 # checks users enter an integer / float between a low and high number and allows 'xxx'
@@ -123,22 +74,27 @@ def num_check(question, type, low=None, high=None):
             continue
 
 
-# Adds decorations to selected text
-def statement_generator(statement, decoration, lines=None):
-    sides = decoration * 3
+# Asks users how many questions they want to play
+def check_questions():
 
-    statement = f"{sides} {statement} {sides}"
-    top_bottom = decoration * len(statement)
+    while True:
+        response = input("How many questions: ")
 
-    # use 3 lines for headings / heavy decoration
-    if lines == 3:
-        new_statement = f"{top_bottom}\n{statement}\n{top_bottom}"
+        round_error = "Please type either <enter> or an integer that is more than 0"
 
-    else:
-        # default is one single line
-        new_statement = statement
+        if response != "":
+            try:
+                response = int(response)
 
-    return new_statement
+                if response < 1:
+                    color_text(round_error, 'red')
+                    continue
+
+            except ValueError:
+                color_text(round_error, 'red')
+                continue
+
+        return response
 
 
 # Lets you change color of printed text easily
@@ -173,16 +129,6 @@ question_type_list = ["addition", "subtraction", "both"]
 y_n_error = "Please enter either yes or no"
 mode_error = "Please choose either easy, medium or hard"
 question_type_error = "Please choose either addition, subtraction or both"
-
-# Prints title with decorations and color
-title = statement_generator("Welcome to The Plus One Quiz", "*", 3)
-colour_title = color_text(title, 'cyan')
-
-# Asks users if they have played before
-# if 'no' then print instructions
-played_before = choice_checker("Have you played before? ", y_n_list, y_n_error)
-if played_before == "no":
-    instructions()
 
 play_again = "yes"
 while play_again == "yes":
@@ -251,7 +197,7 @@ while play_again == "yes":
         if question_type == "subtraction":
             answer = random_num - add_sub_num
             less_more = "less"
-        if question_type == "both":
+        else:
             add_or_sub = random.randint(1, 10)
             if add_or_sub > 5:
                 answer = random_num + add_sub_num
@@ -282,57 +228,17 @@ while play_again == "yes":
             # Set color to red
             color_result = "\033[91m" + result + "\033[92m"
             color_text("Incorrect ❌", 'red')
-            questions_wrong += 1
-            outcome = f"Question {questions_answered + 1}: {color_result}, the correct answer was {round(answer, 2)}"
-
-        # add results to quiz summary
-        quiz_summary.append(outcome)
+            questions_right += 1
+            outcome = f"Question {questions_answered + 1}: {color_result}, the correct answer was {answer}"
 
         questions_answered += 1
+        # add results to quiz summary
+        quiz_summary.append(outcome)
 
         # End quiz if requested # of questions has been played
         if questions_answered == questions:
             break
 
-    if questions_answered >= 1:
-        # Ask user if they want to see their quiz history
-        # if 'yes' show quiz history
-        print()
-        show_stats = choice_checker("Would you like to see your"
-                                    " end quiz history? "
-                                    , y_n_list, y_n_error)
 
-        # Calculate stats and print them out
-        if show_stats == "yes":
-
-            # Calculate quiz stat
-            percent_right = questions_right / questions_answered * 100
-            percent_wrong = questions_wrong / questions_answered * 100
-
-            # Displays quiz history
-            print()
-            quiz_history = statement_generator("Quiz History", "-", 3)
-            color_quiz_history = color_text(quiz_history, 'cyan')
-
-            for quiz in quiz_summary:
-                color_text(quiz, 'yellow')
-
-            print()
-
-            # displays quiz stats with % values to the nearest whole number
-            statement_generator("Quiz Statistics", "-", 3)
-            color_text(f"Correct: {questions_right}, {percent_right:.0f}%", 'green')
-            color_text(f"Incorrect: {questions_wrong}, {percent_wrong:.0f}%", 'red')
-
-    # Ask user if they want to play again
-    print()
-    play_again = choice_checker("Would you like to play again? "
-                                , y_n_list, y_n_error)
-# If user hasn't played a round comment
-# Don't give them the option of quiz history
-if questions_answered < 1:
-    print()
-    print("Maybe play the quiz next time 🤦‍♂️")
-else:
-    print()
-    color_text("Thanks for playing The Plus One Quiz 😃", "blue")
+print()
+color_text("Thanks for playing The Plus One Quiz 😃", "blue")

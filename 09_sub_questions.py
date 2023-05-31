@@ -144,7 +144,8 @@ while play_again == "yes":
 
     # Choose difficulty and question type
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
-    question_type = choice_checker("Would you like addition, subtraction or both? ", question_type_list, question_type_error)
+    question_type = choice_checker("Would you like addition, subtraction or both? "
+                                   , question_type_list, question_type_error)
 
     end_quiz = "no"
     while end_quiz == "no":
