@@ -1,6 +1,7 @@
 import random
 # Functions
 
+
 # checks user answers with valid answer
 def choice_checker(question, valid_list, error):
     while True:
@@ -34,6 +35,8 @@ def instructions():
     print("Hard mode - Add / subtract 0.01-0.05 to a number up to 1000.")
     print()
     print("Next you will need to enter if you would like to answer addition, subtraction or both.")
+    print()
+    print("You will also need to choose if you would like negative numbers.")
     print()
     print("You can enter 'xxx' at any time during the quiz to quit.")
     print()
@@ -119,7 +122,10 @@ def num_check(question, type, low=None, high=None):
             return response
 
         except ValueError:
-            color_text("Please enter an integer or 'xxx'", 'red')
+            if type == "int":
+                color_text("Please enter an integer or 'xxx'", 'red')
+            else:
+                color_text("Please enter a number or 'xxx'", 'red')
             continue
 
 
@@ -175,7 +181,7 @@ mode_error = "Please choose either easy, medium or hard"
 question_type_error = "Please choose either addition, subtraction or both"
 
 # Prints title with decorations and color
-title = statement_generator("Welcome to The Plus One Quiz", "*", 3)
+title = statement_generator("Welcome to The Addition and Subtraction Quiz", "*", 3)
 colour_title = color_text(title, 'cyan')
 
 # Asks users if they have played before
@@ -261,29 +267,33 @@ while play_again == "yes":
                 less_more = "less"
 
         # Ask user for there guess
-        user_guess = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", int, low_num, max_num + 1)
+        rounded_answer = round(answer, 2)
+        print(rounded_answer)
+        user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", int, low_num, max_num + 1)
 
         # Print result in color and set outcome
-        if user_guess == answer:
+        if user_answer == rounded_answer:
             result = "Correct ✔"
             # Set color to green
             color_result = "\033[92m" + result + "\033[0m"
-            color_text("Correct ✔", 'green')
+            print(color_result)
             questions_right += 1
             outcome = f"Question {questions_answered + 1}: {color_result}"
 
         # End quiz if exit code is typed
-        elif user_guess == "xxx":
+        elif user_answer == "xxx":
             break
 
         # Print result in color and set outcome
         else:
             result = "Incorrect ❌"
             # Set color to red
-            color_result = "\033[91m" + result + "\033[92m"
-            color_text("Incorrect ❌", 'red')
+            color_result = "\033[91m" + result + "\033[91m"
+            print(color_result)
             questions_wrong += 1
-            outcome = f"Question {questions_answered + 1}: {color_result}, the correct answer was {round(answer, 2)}"
+            user_wrong_answer = f"{add_sub_num} {less_more} than {random_num} is not {user_answer}"
+            color_wrong_answer = "\033[91m" + user_wrong_answer + "\033[92m"
+            outcome = f"Question {questions_answered + 1}: {color_result}, {color_wrong_answer}, the correct answer was {rounded_answer}"
 
         # add results to quiz summary
         quiz_summary.append(outcome)
@@ -335,4 +345,4 @@ if questions_answered < 1:
     print("Maybe play the quiz next time 🤦‍♂️")
 else:
     print()
-    color_text("Thanks for playing The Plus One Quiz 😃", "blue")
+    color_text("Thanks for playing The Addition and Subtraction Quiz 😃", "blue")
