@@ -1,4 +1,5 @@
 import random
+# V3 - Fixing all of ChatGPTs errors
 # Functions
 
 
@@ -222,63 +223,37 @@ while play_again == "yes":
 
         color_text(heading, 'yellow')
 
-        # Generate random num for different difficulty
-        if mode_choice == "easy" or mode_choice == "medium":
-            if mode_choice == "easy":
-                # Set low num so that answer is valid / change low num to negative if chosen
-                if negative_num == "yes":
-                    low_num = -100 - add_sub_num
-                else:
-                    low_num = 1
-                # Set max num so that answer is valid
-                max_num = 100 + add_sub_num
-                add_sub_num = 1
-            if mode_choice == "medium":
-                # Set low num so that answer is valid / change low num to negative if chosen
-                if negative_num == "yes":
-                    low_num = -500 - add_sub_num
-                else:
-                    low_num = 1
-                # Random randiant used to get a integer
-                # Set max num so that answer is valid
-                add_sub_num = random.randint(1, 5)
-                max_num = 500 + add_sub_num
+        # Generate random number for different difficulty
+        if mode_choice == "easy":
+            add_sub_num = 1
+            low_num = -100 - add_sub_num if negative_num == "yes" else 1
+            max_num = 100 + add_sub_num
             random_num = random.randint(low_num, max_num)
-
+        elif mode_choice == "medium":
+            add_sub_num = random.randint(1, 5)
+            low_num = -500 - add_sub_num if negative_num == "yes" else 1
+            max_num = 500 + add_sub_num
+            random_num = random.randint(low_num, max_num)
         else:
-            # Set low num so that answer is valid / change low num to negative if chosen
-            if negative_num == "yes":
-                low_num = -1000 - add_sub_num
-            else:
-                low_num = 1
-            # Set max num so that answer is valid
-            max_num = 1000 + add_sub_num
-            # Random uniform used to get a float
             add_sub_num = round(random.uniform(0.01, 0.05), 2)
+            low_num = -1000 - add_sub_num if negative_num == "yes" else 1
+            max_num = 1000 + add_sub_num
             random_num = round(random.uniform(low_num, max_num), 2)
 
-
-        # generate answer with chosen questions
-        # Change the words in the question so it makes sense
+        # Determine question type
         if question_type == "addition":
-            answer = random_num + add_sub_num
-            less_more = "more"
-        if question_type == "subtraction":
-            answer = random_num - add_sub_num
-            less_more = "less"
-        if question_type == "both":
-            add_or_sub = random.randint(1, 10)
-            if add_or_sub > 5:
-                answer = random_num + add_sub_num
-                less_more = "more"
-            else:
-                answer = random_num - add_sub_num
-                less_more = "less"
+            add_or_sub = 1
+        elif question_type == "subtraction":
+            add_or_sub = -1
+        else:
+            add_or_sub = random.choice([1, -1])
 
-        # Ask user for there answer
-        # Round answer to 2dp
+        # Calculate answer and determine less/more
+        answer = random_num + (add_sub_num * add_or_sub)
+        less_more = "more" if add_or_sub == 1 else "less"
+
+        # Ask user for their answer
         rounded_answer = round(answer, 2)
-        print(rounded_answer)
         user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", int, low_num, max_num)
 
         # Print result in color and set outcome
@@ -314,7 +289,6 @@ while play_again == "yes":
         # End quiz if requested # of questions has been played
         if questions_answered == questions:
             break
-
 
     if questions_answered >= 1:
         # Ask user if they want to see their quiz history
