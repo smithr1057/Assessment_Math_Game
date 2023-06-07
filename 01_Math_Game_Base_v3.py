@@ -201,7 +201,7 @@ while play_again == "yes":
     quiz_summary = []
 
     # Ask user for # of questions, <enter> for infinite mode
-    questions = check_questions()
+    questions = num_check("How many questions: ", int, 0)
 
     # Choose difficulty and question type
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)

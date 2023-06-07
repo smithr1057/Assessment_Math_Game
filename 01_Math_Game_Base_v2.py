@@ -1,6 +1,6 @@
 import random
 # V2 - Line 225 and beyond has been made more efficient ChatGPT was used with the prompt
-# Can you make this part of the doe more efficient with no repeated code
+# Can you make this part of the code more efficient with no repeated code
 # Functions
 
 
