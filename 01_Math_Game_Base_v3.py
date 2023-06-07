@@ -51,32 +51,10 @@ def instructions():
     return ""
 
 
-# Asks users how many questions they want to play
-def check_questions():
-
-    while True:
-        response = input("How many questions: ")
-
-        round_error = "Please type either <enter> or an integer that is more than 0"
-
-        if response != "":
-            try:
-                response = int(response)
-
-                if response < 1:
-                    color_text(round_error, 'red')
-                    continue
-
-            except ValueError:
-                color_text(round_error, 'red')
-                continue
-
-        return response
-
-
 # checks users enter an integer / float between a low and high number and allows 'xxx'
-def num_check(question, type, low=None, high=None):
-    # Used ChatGPT to allow the use of the letter 'x' used the prompt bellow
+# Also allows <enter> if required
+def num_check(question, type, enter, low=None, high=None):
+    # Used ChatGPT to allow the use of the letter 'x' used the prompt below
     # Make that function allow the letter 'x' to be used
 
     if low is not None and high is not None:
@@ -85,26 +63,23 @@ def num_check(question, type, low=None, high=None):
         situation = "low only"
 
     while True:
+        # Ask the question
+        response = input(question)
+
+        # Allow user to enter 'xxx'
+        if response == 'xxx':
+            return response
+        # if specified allow user to enter nothing
+        if enter == 'yes':
+            if response == "":
+                return response
+
         try:
             if type == "int":
-                # Ask the question
-                response = input(question)
-
-                # Check if response is 'x'
-                if response.lower() == 'xxx':
-                    return response
-
-                # Convert the response to an integer
+                # Convert the response into an integer
                 response = int(response)
             else:
-                # Ask the question
-                response = input(question)
-
-                # Check if response is 'xxx'
-                if response.lower() == 'xxx':
-                    return response
-
-                # Convert the response to a float
+                # Convert the response into a float
                 response = float(response)
 
             # Checks input is not too high or
@@ -122,12 +97,15 @@ def num_check(question, type, low=None, high=None):
 
             return response
 
+        # If error the respond with appropriate error message
         except ValueError:
             if type == "int":
-                color_text("Please enter an integer or 'xxx'", 'red')
+                if enter == 'yes':
+                    color_text("Please type either <enter> or an integer that is more than 0", 'red')
+                else:
+                    color_text("Please enter an integer or 'xxx'", 'red')
             else:
                 color_text("Please enter a number or 'xxx'", 'red')
-            continue
 
 
 # Adds decorations to selected text
@@ -200,8 +178,8 @@ while play_again == "yes":
     questions_right = 0
     quiz_summary = []
 
-    # Ask user for # of questions, <enter> for infinite mode
-    questions = num_check("How many questions: ", int, 0)
+    # Ask user for # of rounds, <enter> for infinite mode
+    rounds = num_check("How many questions: ", 'int', 'yes', 0)
 
     # Choose difficulty and question type
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
