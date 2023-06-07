@@ -179,7 +179,7 @@ while play_again == "yes":
     quiz_summary = []
 
     # Ask user for # of rounds, <enter> for infinite mode
-    rounds = num_check("How many questions: ", 'int', 'yes', 0)
+    questions = num_check("How many questions: ", 'int', 'yes', 0)
 
     # Choose difficulty and question type
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
@@ -204,18 +204,23 @@ while play_again == "yes":
         # Generate random number for different difficulty
         if mode_choice == "easy":
             add_sub_num = 1
-            low_num = -100 - add_sub_num if negative_num == "yes" else 1
+            if negative_num == 'yes': low_num = -100 - add_sub_num
+            else: low_num = 0
             max_num = 100 + add_sub_num
             random_num = random.randint(low_num, max_num)
         elif mode_choice == "medium":
             add_sub_num = random.randint(1, 5)
-            low_num = -500 - add_sub_num if negative_num == "yes" else 1
+            if negative_num == 'yes': low_num = -500 - add_sub_num
+            else: low_num = 0
             max_num = 500 + add_sub_num
             random_num = random.randint(low_num, max_num)
         else:
+            # Generate decimal num and find
             add_sub_num = round(random.uniform(0.01, 0.05), 2)
-            low_num = -1000 - add_sub_num if negative_num == "yes" else 1
+            if negative_num == "yes": low_num = -1000 - add_sub_num
+            else: low_num = 0
             max_num = 1000 + add_sub_num
+
             random_num = round(random.uniform(low_num, max_num), 2)
 
         # Determine question type
