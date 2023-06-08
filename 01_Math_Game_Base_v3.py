@@ -179,7 +179,7 @@ while play_again == "yes":
     quiz_summary = []
 
     # Ask user for # of rounds, <enter> for infinite mode
-    questions = num_check("How many questions: ", 'int', 'yes', 0)
+    questions = num_check("How many questions: ", 'int', 'yes', 1)
 
     # Choose difficulty and question type
     mode_choice = choice_checker("Easy, Medium or Hard? ", mode_list, mode_error)
@@ -202,6 +202,7 @@ while play_again == "yes":
         color_text(heading, 'yellow')
 
         # Generate random number for different difficulty
+        # Set low num and high num for each difficulty / negative
         if mode_choice == "easy":
             add_sub_num = 1
             low_num = -100 - add_sub_num if negative_num == "yes" else 1
@@ -230,9 +231,10 @@ while play_again == "yes":
         answer = random_num + (add_sub_num * add_or_sub)
         less_more = "more" if add_or_sub == 1 else "less"
 
+        # Round answer to 2dp
+        rounded_answer = round(answer, 2)
 
         # Ask user for their answer
-        rounded_answer = round(answer, 2)
         if mode_choice == "hard":
             user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", float, 'no', low_num, max_num)
         else:
