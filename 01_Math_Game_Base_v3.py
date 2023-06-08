@@ -236,8 +236,11 @@ while play_again == "yes":
         less_more = "more" if add_or_sub == 1 else "less"
 
         # Ask user for their answer
-        rounded_answer = round(answer, 2)
-        user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", int, low_num, max_num)
+        if mode_choice == "hard":
+            rounded_answer = round(answer, 2)
+            user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", float, 'no', low_num, max_num)
+        else:
+            user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", int, 'no', low_num, max_num)
 
         # Print result in color and set outcome
         if user_answer == rounded_answer:
