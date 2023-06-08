@@ -204,23 +204,18 @@ while play_again == "yes":
         # Generate random number for different difficulty
         if mode_choice == "easy":
             add_sub_num = 1
-            if negative_num == 'yes': low_num = -100 - add_sub_num
-            else: low_num = 0
+            low_num = -100 - add_sub_num if negative_num == "yes" else 1
             max_num = 100 + add_sub_num
             random_num = random.randint(low_num, max_num)
         elif mode_choice == "medium":
             add_sub_num = random.randint(1, 5)
-            if negative_num == 'yes': low_num = -500 - add_sub_num
-            else: low_num = 0
+            low_num = -500 - add_sub_num if negative_num == "yes" else 1
             max_num = 500 + add_sub_num
             random_num = random.randint(low_num, max_num)
         else:
-            # Generate decimal num and find
             add_sub_num = round(random.uniform(0.01, 0.05), 2)
-            if negative_num == "yes": low_num = -1000 - add_sub_num
-            else: low_num = 0
+            low_num = -1000 - add_sub_num if negative_num == "yes" else 1
             max_num = 1000 + add_sub_num
-
             random_num = round(random.uniform(low_num, max_num), 2)
 
         # Determine question type
@@ -235,9 +230,10 @@ while play_again == "yes":
         answer = random_num + (add_sub_num * add_or_sub)
         less_more = "more" if add_or_sub == 1 else "less"
 
+
         # Ask user for their answer
+        rounded_answer = round(answer, 2)
         if mode_choice == "hard":
-            rounded_answer = round(answer, 2)
             user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", float, 'no', low_num, max_num)
         else:
             user_answer = num_check(f"What is {add_sub_num} {less_more} than {random_num}: ", int, 'no', low_num, max_num)
